@@ -6,6 +6,15 @@ import sys
 PyAudio = pyaudio.PyAudio
 
 RATE = 16000 #number of frames per second/frameset.      
+RATE = 16000 #number of frames per second/frameset. 
+BPM = 60 #beats per minute
+VOLUME = 70 #min 0-127 max
+
+def beats2length(beats_list): #returns list of durations given list of beats of 0.5, 1, 2, etc.
+	length_list = []
+	for beat in beats_list:
+		length_list.append((1/(BPM/beat/60))) 
+	return length_list
 
 def play_freq(freq_list, length_list):
 	#to avoid segfault during following loop
@@ -21,7 +30,7 @@ def play_freq(freq_list, length_list):
 
 		#127 is max volume, add 128 to stay in frame range
 		for x in xrange(num_frames):
-			WAVEDATA = WAVEDATA+chr(int(math.sin(x/((RATE/freq)/(2*math.pi)))*60+128))    
+			WAVEDATA = WAVEDATA+chr(int(math.sin(x/((RATE/freq)/(2*math.pi)))*VOLUME+128))    
 
 		#fill remainder of frameset with silence
 		for x in xrange(rest_frame): 
@@ -38,4 +47,7 @@ def play_freq(freq_list, length_list):
 	stream.close()
 	p.terminate()
 
-play_freq([261.63, 440],[2,1])
+#testing 
+duration_list = beats2length([2,1])
+play_freq([261.63, 440], duration_list)
+
