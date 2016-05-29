@@ -1,0 +1,30 @@
+First, install PortAudio:
+sudo apt-get install libasound-dev
+
+Then build PortAudio:
+./configure && make
+
+Then install .so files to use in projects:
+sudo make install
+
+Projects built this way will expect PortAudio to be installed on target systems in order to run. If you want to build a more self-contained binary, you may use the libportaudio.a file:
+cp lib/.libs/libportaudio.a /PATH/TO/OUR/PROJECT
+
+On some systems you may need to use:
+cp /usr/local/lib/libportaudio.a /PATH/TO/OUR/PROJECT
+
+(NOT SURE ABOUT THIS PART! OS X DIDN’T REQUIRE IT)
+You may also need to copy portaudio.h, located in the include/ directory of PortAudio into your project. Note that you will usually need to link with the approriate libraries that you used, such as ALSA and JACK, as well as with librt and libpthread. For example:
+gcc main.c libportaudio.a -lrt -lm -lasound -ljack -pthread -o YOUR_BINARY
+
+This is the full PortAudio documentation if you guys get stuck:
+http://portaudio.com/docs/v19-doxydocs/compile_linux.html
+
+Finally, install PyAudio:
+sudo apt-get install python-pyaudio python3-pyaudio
+
+If the latest version of PyAudio is not available, install it using pip:
+pip install pyaudio
+
+This is the PyAudio documentation if you guys get stuck:
+https://people.csail.mit.edu/hubert/pyaudio/
