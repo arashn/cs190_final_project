@@ -30,6 +30,8 @@ def processNotes(note_info):
                 note.append("F")
             elif(n[0] == 6):
                 note.append("D")
+            elif(n[0] == 7):
+                note.append("B")
         else:
             if(n[0] == 1):
                 note.append("F")
@@ -43,6 +45,8 @@ def processNotes(note_info):
                 note.append("E")
             elif(n[0] == 6):
                 note.append("C")
+            elif(n[0] == 7):
+                note.append("A")
         #print(note)
         notes.append(note)
         #print notes
@@ -153,7 +157,7 @@ def sweepLeft(whitebars, im, threshold):
 
 #------------------------------Start of program ---------------------------------------#
 
-im = Image.open("notetest55.png") #Can be many different formats.
+im = Image.open("notes22.png") #Can be many different formats.
 pix = im.load()
 print "THE SIZE IS: "
 print im.size #width and hight of the image
@@ -198,7 +202,7 @@ while(y < im.size[1]):
             if(bar_length > largest_bar_height):
                 largest_bar_height = bar_length
     elif(c < threshold and on_line == 1):
-		current.append(y-1)
+		current.append(y)
     elif(c > threshold and on_line == 1):
 		on_line = 0
 		list_of_lines.append(current)
@@ -210,12 +214,30 @@ while(y < im.size[1]):
     y = y + 1
 
 
-'''TODO: Should add at least one more whitebar above and below'''
-#add invisible bars above to below
+
+#adds 2 invisible bars above to below first and last lines
 first_line = list_of_lines[0]
-whitebars.insert(0,[(first_line[0]-1-largest_bar_height),(first_line[0]-1), largest_bar_height])
+f_start = (first_line[0]-1-largest_bar_height)
+f_end = (first_line[0]-1)
+whitebars.insert(0,[f_start,f_end, largest_bar_height])
+'''if(f_start > 0):
+    f2_end= f_start - len(first_line)
+    f2_start = f2_end - largest_bar_height
+    if(f2_start < 0):
+        f2_start = 0
+    whitebars.insert(0,[f2_start,f2_end, largest_bar_height])'''
 last_line = list_of_lines[len(list_of_lines)-1]
-whitebars.append([(last_line[len(last_line)-1]+2), (last_line[len(last_line)-1]+largest_bar_height), largest_bar_height])
+l_end = (last_line[len(last_line)-1]+largest_bar_height)
+#if the end invisible bar is greater than height of the image
+if(l_end  > im.size[1]-1):
+    l_end = im.size[1]-1
+whitebars.append([(last_line[len(last_line)-1]+1), l_end, largest_bar_height])
+'''if(l_end < im.size[1]-1):
+    l2_start = l_end + len(last_line)
+    l2_end = l2_start + largest_bar_height
+    if(l2_end  > im.size[1]-1):
+        l2_end = im.size[1]-1
+    whitebars.append([(last_line[len(last_line)-1]+1), l2_end, largest_bar_height])'''
 
 print "lines are:"
 print list_of_lines
