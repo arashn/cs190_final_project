@@ -1,7 +1,7 @@
 
 import math
 from PIL import Image
-
+import play_note
 
 '''Function to determine final note Frequency and Duration'''
 def processNotes(note_info):
@@ -19,34 +19,34 @@ def processNotes(note_info):
             note.append(1)
         if(n[1] == "center"):
             if(n[0] == 1):
-                note.append("G")
+                note.append(784)
             elif(n[0] == 2):
-                note.append("E")
+                note.append(659.3)
             elif(n[0] == 3):
-                note.append("C")
+                note.append(523.3)
             elif(n[0] == 4):
-                note.append("A")
+                note.append(440)
             elif(n[0] == 5):
-                note.append("F")
+                note.append(349.2)
             elif(n[0] == 6):
-                note.append("D")
+                note.append(293.7)
             elif(n[0] == 7):
-                note.append("B")
+                note.append(246.9)
         else:
             if(n[0] == 1):
-                note.append("F")
+                note.append(698.5)
             elif(n[0] == 2):
-                note.append("D")
+                note.append(587.3)
             elif(n[0] == 3):
-                note.append("B")
+                note.append(493.9)
             elif(n[0] == 4):
-                note.append("G")
+                note.append(392)
             elif(n[0] == 5):
-                note.append("E")
+                note.append(329.6)
             elif(n[0] == 6):
-                note.append("C")
+                note.append(261.6)
             elif(n[0] == 7):
-                note.append("A")
+                note.append(220)
         #print(note)
         notes.append(note)
         #print notes
@@ -294,3 +294,5 @@ note_info = getLocationandFill(whitebars, pix, note_middles, threshold, stems)
 print "note info: "
 final_output = processNotes(note_info)
 print final_output
+
+play_note.play_note(final_output)

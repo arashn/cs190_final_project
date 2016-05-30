@@ -5,10 +5,11 @@ import sys
 
 PyAudio = pyaudio.PyAudio
 
-RATE = 16000 #number of frames per second/frameset.      
 RATE = 16000 #number of frames per second/frameset. 
 BPM = 60 #beats per minute
 VOLUME = 70 #min 0-127 max
+CLEF = "treble" #if we ever get to detect the type of clef...
+MAJOR = "D" #major
 
 def beats2length(beats_list): #returns list of durations given list of beats of 0.5, 1, 2, etc.
 	length_list = []
@@ -16,13 +17,17 @@ def beats2length(beats_list): #returns list of durations given list of beats of 
 		length_list.append((1/(BPM/beat/60))) 
 	return length_list
 
-def play_freq(freq_list, length_list):
-	#to avoid segfault during following loop
-	num_notes = len(freq_list) if len(freq_list) < len(length_list) else len(length_list)
+def play_note(note_info): #note info is a list of two-element lists [duration, freq]
+	for note in note_info:
+		freq = note[1] #freq to play
 
-	for i in range(num_notes):
-		freq = freq_list[i] #freq to play
-		length =  length_list[i] #seconds to play sound
+		#For D major ONLY
+		if freq == 349.2: #if F4, change to F#4
+			freq = 370 
+		if freq == 698.5: #if F5, change to F#5
+			freq = 740
+
+		length =  4/note[0] #seconds to play sound
 
 		num_frames = int(RATE * length)
 		rest_frame = num_frames % RATE
@@ -31,10 +36,6 @@ def play_freq(freq_list, length_list):
 		#127 is max volume, add 128 to stay in frame range
 		for x in xrange(num_frames):
 			WAVEDATA = WAVEDATA+chr(int(math.sin(x/((RATE/freq)/(2*math.pi)))*VOLUME+128))    
-
-		#fill remainder of frameset with silence
-		for x in xrange(rest_frame): 
-			WAVEDATA = WAVEDATA+chr(128)
 
 		p = PyAudio()
 		stream = p.open(format = p.get_format_from_width(1), 
@@ -47,7 +48,5 @@ def play_freq(freq_list, length_list):
 	stream.close()
 	p.terminate()
 
-#testing 
-duration_list = beats2length([2,1])
-play_freq([261.63, 440], duration_list)
+
 
