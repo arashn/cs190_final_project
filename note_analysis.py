@@ -157,7 +157,10 @@ def sweepLeft(whitebars, im, threshold):
 
 #------------------------------Start of program ---------------------------------------#
 
-im = Image.open("notes22.png") #Can be many different formats.
+filename = raw_input("Name of image file: ")
+bpm = input("BPM: ")
+vol = input("Volume: ")
+im = Image.open(filename) #Can be many different formats.
 pix = im.load()
 print "THE SIZE IS: "
 print im.size #width and hight of the image
@@ -295,4 +298,4 @@ print "note info: "
 final_output = processNotes(note_info)
 print final_output
 
-play_note.play_note(final_output)
+play_note.play_note(final_output, bpm, vol)
