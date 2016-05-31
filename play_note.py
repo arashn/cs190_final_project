@@ -15,17 +15,22 @@ def beats2length(beats_list): #returns list of durations given list of beats of 
 		length_list.append((1/(BPM/beat/60))) 
 	return length_list
 
-def play_note(note_info, bpm, volume): #note info is a list of two-element lists [duration, freq]
+def play_note(note_info, bpm, major): #note info is a list of two-element lists [duration, freq]
 	BPM = bpm
-	VOLUME = volume
+	MAJOR = major
 	for note in note_info:
 		freq = note[1] #freq to play
 
-		#For D major ONLY
-		# if freq == 349.2: #if F4, change to F#4
-		# 	freq = 370 
-		# if freq == 698.5: #if F5, change to F#5
-		# 	freq = 740
+		if (MAJOR == "G") or (MAJOR == "D") or (MAJOR =="A") or (MAJOR =="E") or (MAJOR =="B") or (MAJOR =="F#") or (MAJOR =="C#"):
+			if freq == 349.2: #if F4, change to F#4
+		 		freq = 370 
+			if freq == 698.5: #if F5, change to F#5
+				freq = 740
+			if (MAJOR == "D") or (MAJOR =="A") or (MAJOR =="E") or (MAJOR =="B") or (MAJOR =="F#") or (MAJOR =="C#"):
+				if freq == 261.6:
+					freq = 277.2
+				if freq == 523.3:
+					freq = 554.4
 
 		length =  4/note[0]/(BPM/60) #seconds to play sound
 
